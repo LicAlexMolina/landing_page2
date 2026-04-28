@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tribu | Diagnóstico Operacional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+:root {
+  --purple:      #9747FF;
+  --purple-dark: #7a2fe0;
+  --black:       #0a0a0a;
+  --gray-700:    #374151;
+  --gray-500:    #6b7280;
+  --gray-300:    #d1d5db;
+  --gray-100:    #f3f4f6;
+  --white:       #ffffff;
+  --card-border: #e5e7eb;
+  --teal-bg:     #e6faf5;
+  --teal-label:  #047857;
+  --radius:      16px;
+  --radius-sm:   10px;
+}
+
+body {
+  background: var(--white);
+  color: var(--black);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--white);
+  border-bottom: 1px solid var(--card-border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 72px;
+}
+.nav-logo { display: flex; align-items: center; text-decoration: none; }
+.nav-logo svg { height: 28px; width: auto; max-width: 160px; }
+
+.nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+.nav-links a { color: var(--gray-500); text-decoration: none; font-size: 0.9rem; font-weight: 450; transition: color 0.2s; }
+.nav-links a:hover { color: var(--black); }
+
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 11px 22px;
+  background: var(--purple); color: var(--white);
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+  border-radius: 50px; text-decoration: none; border: none; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-primary:hover { background: var(--purple-dark); transform: translateY(-1px); }
+
+.btn-arrow {
+  width: 26px; height: 26px; background: var(--white); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+/* ── LAYOUT ── */
+.page-max { max-width: 1160px; margin: 0 auto; padding: 0 48px; }
+
+hr.divider {
+  border: none; border-top: 1px solid var(--card-border);
+  max-width: calc(1160px + 96px); margin: 0 auto;
+}
+
+/* ── HERO ── */
+.hero { padding: 80px 0 64px; }
+
+.label-tag {
+  display: inline-block; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.13em; text-transform: uppercase;
+  color: var(--purple); margin-bottom: 18px;
+}
+
+.hero h1 {
+  font-size: clamp(2.4rem, 5vw, 3.7rem); font-weight: 800; line-height: 1.08;
+  letter-spacing: -0.025em; color: var(--black);
+  max-width: 680px; margin-bottom: 20px;
+  animation: fadeUp 0.5s ease both;
+}
+.hero-sub {
+  font-size: 1rem; color: var(--gray-500); max-width: 540px;
+  margin-bottom: 36px; line-height: 1.7;
+  animation: fadeUp 0.5s 0.08s ease both;
+}
+.hero-cta {
+  margin-bottom: 64px;
+  animation: fadeUp 0.5s 0.16s ease both;
+}
+
+/* Botón scroll-down del hero */
+.btn-discover {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 11px 22px;
+  background: var(--black); color: var(--white);
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+  border-radius: 50px; text-decoration: none; border: none; cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  white-space: nowrap;
+}
+.btn-discover:hover { background: #222; transform: translateY(2px); }
+.btn-discover .btn-arrow { background: rgba(255,255,255,0.12); }
+
+/* Feature cards hero */
+.feature-cards {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 14px;
+  animation: fadeUp 0.5s 0.24s ease both;
+}
+.feature-card {
+  border: 1px solid var(--card-border); border-radius: var(--radius);
+  padding: 32px 28px; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.feature-card:hover { border-color: var(--gray-300); box-shadow: 0 4px 20px rgba(0,0,0,0.06); }
+.card-icon {
+  width: 52px; height: 52px; background: var(--gray-100); border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin-bottom: 24px;
+}
+.feature-card h3 { font-size: 0.95rem; font-weight: 700; color: var(--black); margin-bottom: 10px; line-height: 1.3; }
+.feature-card .big-num { font-size: 2.2rem; font-weight: 800; color: var(--black); letter-spacing: -0.03em; line-height: 1; margin-bottom: 6px; }
+.feature-card p { font-size: 0.85rem; color: var(--gray-500); line-height: 1.6; }
+
+/* ── SECTION ── */
+.section { padding: 80px 0; }
+.section-title { font-size: clamp(1.9rem, 4vw, 2.9rem); font-weight: 800; color: var(--black); letter-spacing: -0.025em; line-height: 1.1; margin-bottom: 14px; }
+.section-sub { font-size: 1rem; color: var(--gray-500); max-width: 540px; margin-bottom: 44px; line-height: 1.65; }
+
+/* ── PROBLEMA ── */
+.prob-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 40px; }
+.stat-box { border: 1px solid var(--card-border); border-radius: var(--radius); padding: 36px 32px; }
+.stat-emoji { font-size: 1.5rem; margin-bottom: 12px; display: block; }
+.stat-big { font-size: 2.6rem; font-weight: 800; color: var(--black); letter-spacing: -0.03em; line-height: 1; margin-bottom: 6px; }
+.stat-label { font-size: 0.82rem; color: var(--gray-500); }
+
+.impact-head { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gray-500); margin-bottom: 0; }
+.impact-list { list-style: none; }
+.impact-list li {
+  display: flex; align-items: flex-start; gap: 14px;
+  font-size: 0.93rem; color: var(--gray-700);
+  padding: 18px 0; border-bottom: 1px solid var(--card-border); line-height: 1.5;
+}
+.impact-list li:first-child { border-top: 1px solid var(--card-border); }
+.arrow { color: var(--purple); font-weight: 700; flex-shrink: 0; }
+
+/* ── AUTOEVALUACIÓN (teal) ── */
+.teal-wrap { background: var(--teal-bg); }
+.teal-label { color: var(--teal-label) !important; }
+
+.eval-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 44px; }
+.eval-card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 28px; display: flex; gap: 14px; align-items: flex-start;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+.eval-card .eicon { font-size: 1.25rem; flex-shrink: 0; margin-top: 2px; }
+.eval-card p { font-size: 0.92rem; color: var(--gray-700); line-height: 1.55; }
+
+/* ── ENFOQUE TRIBU — tricards ── */
+.tricards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-bottom: 16px; }
+.tricard {
+  border: 1px solid var(--card-border); border-radius: var(--radius);
+  padding: 30px 26px; background: var(--white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.tricard:hover { border-color: var(--gray-300); box-shadow: 0 4px 18px rgba(0,0,0,0.06); }
+.tricard.dark { background: var(--black); border-color: var(--black); }
+.tricard-icon {
+  width: 50px; height: 50px; background: var(--gray-100);
+  border-radius: var(--radius-sm); display: flex; align-items: center;
+  justify-content: center; font-size: 1.2rem; margin-bottom: 24px;
+}
+.tricard.dark .tricard-icon { background: #1f1f1f; }
+.tricard h3 { font-size: 1rem; font-weight: 700; margin-bottom: 10px; line-height: 1.3; color: var(--black); }
+.tricard.dark h3 { color: var(--white); }
+.tricard p { font-size: 0.85rem; color: var(--gray-500); line-height: 1.6; }
+.tricard.dark p { color: #9ca3af; }
+
+/* ── STEP CARDS ── */
+.step-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+.step-card { background: var(--black); border-radius: var(--radius); padding: 32px 28px; }
+.step-num { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #6b7280; margin-bottom: 10px; display: block; }
+.step-card h3 { font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 10px; line-height: 1.3; }
+.step-card p { font-size: 0.85rem; color: #9ca3af; line-height: 1.6; margin-bottom: 24px; }
+.step-link { color: #d1d5db; font-size: 0.85rem; text-decoration: none; font-weight: 500; transition: color 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+.step-link:hover { color: var(--white); }
+
+/* ── PURPLE BANNER ── */
+.purple-banner {
+  background: linear-gradient(135deg, #1a0040 0%, #3b0f80 35%, #6b21d6 70%, #9747FF 100%);
+  border-radius: var(--radius); padding: 72px 56px; color: var(--white); text-align: center;
+  position: relative; overflow: hidden; margin-top: 20px;
+}
+.banner-title { font-size: clamp(1.8rem, 3vw, 2.6rem); font-weight: 800; letter-spacing: -0.025em; margin-bottom: 18px; line-height: 1.15; }
+.banner-sub { font-size: 1rem; color: rgba(255,255,255,0.72); max-width: 520px; margin: 0 auto 36px; line-height: 1.65; }
+.banner-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 14px 28px; background: var(--purple); color: var(--white);
+  font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem;
+  border-radius: 50px; text-decoration: none; transition: background 0.2s;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+.banner-btn:hover { background: var(--purple-dark); }
+.banner-pills { display: flex; justify-content: center; gap: 10px; margin-top: 32px; flex-wrap: wrap; }
+.banner-pill { padding: 7px 18px; border: 1px solid rgba(255,255,255,0.22); border-radius: 50px; font-size: 0.8rem; color: rgba(255,255,255,0.8); }
+.banner-url { margin-top: 24px; font-size: 0.8rem; color: rgba(255,255,255,0.38); }
+.banner-url a { color: rgba(255,255,255,0.55); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── FOOTER ── */
+footer { background: var(--black); color: var(--white); padding: 64px 48px 36px; overflow: hidden; width: 100%; }
+.footer-grid { max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr; gap: 80px; margin-bottom: 48px; width: 100%; }
+.footer-logo-row { display: flex; align-items: center; margin-bottom: 16px; }
+.footer-logo-row svg { max-width: 100%; height: 24px; width: auto; }
+.footer-tagline { font-size: 0.875rem; color: #9ca3af; line-height: 1.6; max-width: 300px; margin-bottom: 4px; }
+.footer-sub { font-size: 0.8rem; color: #6b7280; }
+.footer-nav-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-bottom: 18px; }
+.footer-nav { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+.footer-nav a { color: #9ca3af; text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+.footer-nav a:hover { color: var(--white); }
+.footer-bottom { max-width: 1160px; margin: 0 auto; padding-top: 24px; border-top: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; width: 100%; }
+.footer-copy, .footer-loc { font-size: 0.78rem; color: #6b7280; }
+
+/* ── ANIMACIONES ── */
+@keyframes fadeUp { from { opacity:0; transform:translateY(22px);} to { opacity:1; transform:translateY(0);} }
+
+/* ── RESPONSIVE ── */
+/* ── SPLIT LAYOUT (Slide1) ── */
+.hero-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 48px; align-items: center;
+  margin-bottom: 48px;
+}
+.hero-split-text { display: flex; flex-direction: column; gap: 16px; }
+.hero-split-text .label-tag { margin-bottom: 0; }
+.hero-split-text h1 { margin-bottom: 0; animation: none; }
+.hero-split-text p { color: var(--gray-500); font-size: 1rem; line-height: 1.7; margin: 0; animation: none; }
+.hero-split-img img {
+  width: 100%; height: auto;
+  border-radius: var(--radius); display: block;
+}
+
+/* ── BANNER ANCHO (Slide2) ── */
+.banner-img {
+  width: 100%; border-radius: var(--radius);
+  overflow: hidden; margin-bottom: 40px;
+}
+.banner-img img {
+  width: 100%; height: 340px;
+  object-fit: cover; object-position: center;
+  display: block; border-radius: var(--radius);
+}
+
+/* ── MÉTODO SPLIT (Slide4 izq + cards der) ── */
+.method-split {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; align-items: start;
+  margin-bottom: 40px;
+}
+.method-split-img img {
+  width: 100%; height: auto;
+  border-radius: var(--radius); display: block;
+}
+.method-split-cards { display: flex; flex-direction: column; gap: 14px; }
+.method-split-cards .step-card { margin: 0; }
+.hero-bg {
+  width: 100%; border-radius: var(--radius);
+  overflow: hidden; margin-bottom: 48px;
+  text-align: center;
+}
+.hero-bg img {
+  width: 48%; height: auto;
+  display: block; border-radius: var(--radius);
+  opacity: 0.92; margin: 0 auto;
+}
+
+.slide-img {
+  width: 100%; border-radius: var(--radius);
+  overflow: hidden; margin-bottom: 40px;
+  text-align: center;
+}
+.slide-img img {
+  width: 48%; height: auto;
+  display: block; border-radius: var(--radius);
+  margin: 0 auto;
+}
+
+.slide-img.tall img { width: 50%; }
+
+/* ── HAMBURGUESA ── */
+.hamburger {
+  display: none; flex-direction: column; justify-content: center;
+  gap: 5px; background: none; border: none; cursor: pointer;
+  padding: 4px; z-index: 200;
+}
+.hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: var(--black); border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-menu {
+  display: none; position: fixed; inset: 0; top: 60px;
+  background: var(--white); z-index: 150;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 32px; border-top: 1px solid var(--card-border);
+}
+.mobile-menu.open { display: flex; }
+.mobile-menu a {
+  color: var(--black); text-decoration: none;
+  font-size: 1.2rem; font-weight: 500;
+  transition: color 0.2s;
+}
+.mobile-menu a:hover { color: var(--purple); }
+.mobile-menu .btn-primary { font-size: 1rem; padding: 14px 32px; }
+
+/* ── TABLET (max 900px) ── */
+@media (max-width: 900px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .page-max { padding: 0 24px; }
+  .hero-split, .method-split { grid-template-columns: 1fr; }
+  .banner-img img { height: 220px; }
+  .prob-stats, .eval-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; margin-bottom: 32px; text-align: center; }
+  .footer-logo-row { justify-content: center; }
+  .footer-tagline, .footer-sub { max-width: 100%; }
+  .footer-nav { align-items: center; }
+  .footer-nav-title { text-align: center; }
+  footer { padding: 48px 20px 28px; }
+  .purple-banner { padding: 48px 24px; }
+  .hero { padding: 56px 0 48px; }
+  .section { padding: 60px 0; }
+}
+
+/* ── MÓVIL (max 600px) ── */
+@media (max-width: 600px) {
+  /* Nav */
+  nav { height: 60px; padding: 0 16px; }
+  .nav-logo svg { height: 22px; }
+  .nav-links { display: none; }
+  .nav-links + .btn-primary { display: none; }
+  .hamburger { display: flex; }
+
+  /* Imágenes móvil — ancho completo proporcional */
+  .hero-bg img,
+  .slide-img img,
+  .slide-img.tall img { width: 100%; }
+
+  /* Hero */
+  .hero { padding: 40px 0 36px; }
+  .hero h1 { font-size: clamp(1.9rem, 7vw, 2.6rem); margin-bottom: 16px; }
+  .hero-sub { font-size: 0.93rem; margin-bottom: 28px; }
+  .hero-cta { margin-bottom: 40px; }
+  .btn-discover { font-size: 0.85rem; padding: 10px 18px; width: 100%; justify-content: center; }
+
+  /* Feature cards */
+  .feature-cards { grid-template-columns: 1fr; gap: 10px; }
+  .feature-card { padding: 24px 20px; }
+  .feature-card .big-num { font-size: 1.8rem; }
+
+  /* Secciones */
+  .section { padding: 48px 0; }
+  .section-title { font-size: clamp(1.6rem, 6vw, 2rem); }
+  .section-sub { font-size: 0.92rem; margin-bottom: 28px; }
+  .label-tag { font-size: 0.68rem; }
+
+  /* Problema */
+  .prob-stats { grid-template-columns: 1fr; gap: 10px; margin-bottom: 28px; }
+  .stat-box { padding: 24px 20px; }
+  .stat-big { font-size: 2rem; }
+  .impact-list li { font-size: 0.88rem; padding: 14px 0; gap: 10px; }
+
+  /* Autoevaluación */
+  .teal-wrap .section { padding: 48px 0; }
+  .eval-grid { grid-template-columns: 1fr; gap: 10px; margin-bottom: 32px; }
+  .eval-card { padding: 20px; }
+  .eval-card p { font-size: 0.88rem; }
+
+  /* Step cards */
+  .step-cards { grid-template-columns: 1fr; gap: 10px; }
+  .step-card { padding: 24px 20px; }
+  .step-card h3 { font-size: 0.95rem; }
+  .step-card p { font-size: 0.82rem; }
+
+  /* Banner */
+  .purple-banner { padding: 40px 20px; border-radius: 12px; }
+  .banner-title { font-size: clamp(1.5rem, 6vw, 2rem); }
+  .banner-sub { font-size: 0.9rem; }
+  .banner-btn { font-size: 0.88rem; padding: 12px 20px; width: 100%; justify-content: center; }
+  .banner-pills { gap: 8px; }
+  .banner-pill { font-size: 0.72rem; padding: 6px 14px; }
+
+  /* Footer */
+  footer { padding: 40px 20px 32px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 28px; margin-bottom: 32px; text-align: center; max-width: 100%; }
+  .footer-logo-row { justify-content: center; }
+  .footer-tagline, .footer-sub { max-width: 100%; }
+  .footer-nav { align-items: center; }
+  .footer-nav-title { text-align: center; }
+  .footer-logo-row svg { height: 20px; }
+  .footer-bottom { max-width: 100%; flex-direction: column; gap: 6px; text-align: center; }
+  .footer-copy, .footer-loc { font-size: 0.74rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="https://tribuemprendedores.com/web/" class="nav-logo" target="_blank" data-term="nav_logo">
+    <svg xmlns="http://www.w3.org/2000/svg" width="641" height="118" fill="none" viewBox="0 0 641 118">
+      <path fill="#0a0a0a" d="M117.19 39.06c0 21.57-17.49 39.06-39.06 39.06S39.07 60.63 39.07 39.06 56.56 0 78.13 0s39.06 17.49 39.06 39.06M78.13 78.12c-21.58 0-39.06 17.49-39.06 39.06h78.12c0-21.57-17.49-39.06-39.06-39.06M39.07 0C17.49 0 0 17.49 0 39.06s17.49 39.06 39.07 39.06z"/>
+      <path fill="#0a0a0a" d="M39.07 78.12C17.49 78.12 0 95.61 0 117.18h39.07zM117.19 0c21.57 0 39.06 17.49 39.06 39.06s-17.49 39.06-39.06 39.06zM117.19 78.12c21.57 0 39.06 17.49 39.06 39.06h-39.06zM185.64 35.08V14.41h83.68v20.67h-29.11v79.88H214.9V35.08zM279.86 14.4h47.39c22.36 0 35.86 10.27 35.86 29.25 0 13.36-7.88 21.8-20.39 24.61v.28c25.17 4.36 16.03 43.32 21.8 45v1.41h-26.3c-4.92-4.22 4.22-35.02-17.3-35.02h-15.75v35.02h-25.31zm25.31 44.87h17.15c10.13 0 15.47-3.66 15.47-12.1s-5.34-12.09-15.47-12.09h-17.15zM403.12 14.4v100.55h-25.31V14.4zM483.42 61.1v.28c10.55 1.83 19.55 8.86 19.55 23.91 0 21.38-13.64 29.67-34.46 29.67H418.3V14.41h48.8c20.96 0 31.92 8.16 31.92 25.32 0 12.38-7.31 18.56-15.61 21.38zm-22.36-6.05c7.03 0 12.66-1.69 12.66-9.98s-5.62-9.99-12.66-9.99h-17.44v19.97zm-17.44 39.24h18.14c10.55 0 15.89-2.53 15.89-11.95s-5.34-11.82-15.89-11.82h-18.14zM555.43 117.2c-30.38 0-42.05-13.5-42.05-38.53V14.4h25.31v64.27c0 13.08 5.62 17.86 16.74 17.86s16.74-4.78 16.74-17.86V14.4h25.31v64.27c0 25.04-11.67 38.53-42.05 38.53M616.08 17.37h-4.19V14.4h11.99v2.97h-4.17v11.44h-3.63zM629.66 14.4l2.96 9.19h.04l2.96-9.19h4.44v14.41h-3.43v-8.97h-.04l-2.68 8.97h-2.54l-2.68-8.97h-.04v8.97h-3.43V14.4z"/>
+    </svg>
+  </a>
+
+  <ul class="nav-links">
+    <li><a href="https://tribuemprendedores.com/web/" target="_blank" data-term="nav_nosotros">Nosotros</a></li>
+    <li><a href="https://tribuemprendedores.com/web/" target="_blank" data-term="nav_solucion">Nuestra Solución</a></li>
+    <li><a href="https://tribuemprendedores.com/web/metodologia-de-implementacion-tribu.html" target="_blank" data-term="nav_metodologia">Metodología</a></li>
+  </ul>
+
+  <a href="https://tribuemprendedores.com/web/" class="btn-primary" target="_blank" data-term="nav_cta">
+    Explorar Tribu
+    <span class="btn-arrow">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+        <path d="M2 7h10M7 2l5 5-5 5" stroke="#9747FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </a>
+
+  <!-- Hamburguesa solo en móvil -->
+  <button class="hamburger" id="hamburger" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Menú móvil -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="https://tribuemprendedores.com/web/" target="_blank" data-term="mob_nosotros">Nosotros</a>
+  <a href="https://tribuemprendedores.com/web/" target="_blank" data-term="mob_solucion">Nuestra Solución</a>
+  <a href="https://tribuemprendedores.com/web/metodologia-de-implementacion-tribu.html" target="_blank" data-term="mob_metodologia">Metodología</a>
+  <a href="https://tribuemprendedores.com/web/" class="btn-primary" target="_blank" data-term="mob_cta">
+    Explorar Tribu
+    <span class="btn-arrow">
+      <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+        <path d="M2 7h10M7 2l5 5-5 5" stroke="#9747FF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+  </a>
+</div>
+
+<!-- ── HERO ── -->
+<div class="page-max">
+  <div class="hero" id="inicio">
+    <div class="hero-split">
+      <div class="hero-split-text">
+        <span class="label-tag">Diagnóstico Operacional</span>
+        <h1>Las señales de que tus procesos manuales están afectando tu rentabilidad</h1>
+        <p>El 70–95% de los proyectos de software e IA fracasan. No por la tecnología, sino por empezar sin un problema de negocio claro y sin alinear objetivos desde el inicio.</p>
+        <div>
+          <a href="#problema" class="btn-discover">
+            Descubre cómo puedes evitarlo
+            <span class="btn-arrow">
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+                <path d="M7 2v10M3 8l4 4 4-4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+      <div class="hero-split-img">
+        <img src="Slide1.png" alt="Diagnóstico Operacional Tribu">
+      </div>
+    </div>
+
+    <div class="feature-cards">
+      <div class="feature-card">
+        <div class="card-icon">⏱️</div>
+        <h3>Proyectos de IA que fracasan</h3>
+        <div class="big-num">70–95%</div>
+        <p>Por falta de un problema de negocio claro al inicio del proyecto.</p>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon">📉</div>
+        <h3>Tiempo en tareas mecánicas</h3>
+        <div class="big-num">Hasta 40%</div>
+        <p>De la jornada de tu equipo sin generar valor estratégico real.</p>
+      </div>
+      <div class="feature-card">
+        <div class="card-icon">⚠️</div>
+        <h3>Riesgo sin diagnóstico previo</h3>
+        <div class="big-num">Muy alto</div>
+        <p>Invertir en tecnología sin evaluar primero tu operación.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
+<!-- ── EL PROBLEMA ── -->
+<section id="problema">
+  <div class="page-max">
+    <div class="section">
+      <span class="label-tag">El Problema</span>
+      <h2 class="section-title">Tu equipo está perdiendo hasta el 40%<br>de su tiempo en tareas mecánicas</h2>
+
+      <div class="banner-img">
+        <img src="Slide2.png" alt="Procesos manuales ineficientes">
+      </div>
+
+      <div class="prob-stats">
+        <div class="stat-box">
+          <span class="stat-emoji">⏱️</span>
+          <div class="stat-big">Hasta 40%</div>
+          <div class="stat-label">Tiempo en tareas mecánicas</div>
+        </div>
+        <div class="stat-box">
+          <span class="stat-emoji">📉</span>
+          <div class="stat-big" style="font-size:1.9rem; color:var(--gray-500);">Margen perdido</div>
+          <div class="stat-label">Sin visibilidad operativa</div>
+        </div>
+      </div>
+
+      <p class="section-sub" style="max-width:100%;">Transcribir información de PDFs, cruzar datos en Excel y perseguir correos desordenados crea un cuello de botella invisible que frena tu crecimiento.</p>
+
+      
+
+      <p class="impact-head">El impacto real en tu operación:</p>
+      <ul class="impact-list">
+        <li><span class="arrow">→</span>Procesos que se estancan y generan retrabajo constante</li>
+        <li><span class="arrow">→</span>Fricción operativa por datos incompletos o incorrectos</li>
+        <li><span class="arrow">→</span>Errores administrativos con costo directo en tu margen</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<!-- ── AUTOEVALUACIÓN ── -->
+<section class="teal-wrap" id="autoevaluacion">
+  <div class="page-max">
+    <div class="section">
+      <span class="label-tag teal-label">Autoevaluación</span>
+      <h2 class="section-title">Antes de aprobar un presupuesto<br>tecnológico, evalúa esto:</h2>
+
+      <div class="eval-grid">
+        <div class="eval-card">
+          <span class="eicon">🔍</span>
+          <p>¿Qué procesos dependen demasiado de la revisión manual de tu equipo?</p>
+        </div>
+        <div class="eval-card">
+          <span class="eicon">🔄</span>
+          <p>¿Dónde hay más retrabajo por datos incompletos o incorrectos?</p>
+        </div>
+        <div class="eval-card">
+          <span class="eicon">⚠️</span>
+          <p>¿Si falta una persona clave, se detiene la operación completa?</p>
+        </div>
+        <div class="eval-card">
+          <span class="eicon">⏳</span>
+          <p>¿Qué tareas consumen mucho tiempo pero generan poco valor estratégico?</p>
+        </div>
+      </div>
+
+      <div style="text-align:center;">
+        <a href="https://tribuemprendedores.com/web/" class="btn-primary" style="background:var(--black);" target="_blank" data-term="questions_cta">
+          Analicemos tu operación juntos
+          <span class="btn-arrow" style="background:rgba(255,255,255,0.12);">
+            <svg width="13" height="13" viewBox="0 0 14 14" fill="none">
+              <path d="M2 7h10M7 2l5 5-5 5" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ENFOQUE TRIBU ── -->
+<section id="metodologia">
+  <div class="page-max">
+    <div class="section">
+      <span class="label-tag">Enfoque Tribu</span>
+      <h2 class="section-title">Reduce el riesgo antes de<br>invertir en tecnología</h2>
+      <p class="section-sub">Las herramientas genéricas no resuelven problemas complejos. Priorizamos estrategia antes que software.</p>
+
+      <div class="method-split">
+        <div class="method-split-img">
+          <img src="Slide4.png" alt="Metodología Tribu">
+        </div>
+        <div class="method-split-cards">
+          <div class="step-card">
+            <span class="step-num">01 — Estrategia</span>
+            <h3>Evaluación Estratégica 🔎</h3>
+            <p>Análisis profundo del negocio para identificar dónde se pierde margen e impacto directo en resultados.</p>
+            <a href="https://tribuemprendedores.com/web/metodologia-de-implementacion-tribu.html" class="step-link" target="_blank" data-term="step_estrategia">Leer más →</a>
+          </div>
+          <div class="step-card">
+            <span class="step-num">02 — Validación</span>
+            <h3>Prototipado Ágil ⚡</h3>
+            <p>Plan claro, priorizado y enfocado en resultados. Validamos el valor antes de escalar la inversión.</p>
+            <a href="https://tribuemprendedores.com/web/metodologia-de-implementacion-tribu.html" class="step-link" target="_blank" data-term="step_validacion">Leer más →</a>
+          </div>
+          <div class="step-card">
+            <span class="step-num">03 — Impacto</span>
+            <h3>Resultados Medibles 📊</h3>
+            <p>Soluciones probadas, escalables y con impacto directo en tu EBITDA y operación.</p>
+            <a href="https://tribuemprendedores.com/web/metodologia-de-implementacion-tribu.html" class="step-link" target="_blank" data-term="step_impacto">Leer más →</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- PURPLE BANNER / CTA FINAL -->
+      <div class="purple-banner">
+        <h2 class="banner-title">Tu socio estratégico de crecimiento</h2>
+        <p class="banner-sub">La automatización inteligente debe impactar tu EBITDA, no solo tu tecnología. Guarda este diagnóstico para tu próxima evaluación de presupuesto o compártelo con tu equipo de operaciones.</p>
+        <a href="https://tribuemprendedores.com/web/" class="banner-btn" target="_blank" data-term="ebitda_cta">
+          Explora cómo se vería esto en tu empresa →
+        </a>
+        <div class="banner-pills">
+          <span class="banner-pill">Diagnóstico Operacional</span>
+          <span class="banner-pill">Automatización con IA</span>
+          <span class="banner-pill">Impacto en EBITDA</span>
+          <span class="banner-pill">Resultados Medibles</span>
+        </div>
+        <p class="banner-url">O visita directamente: <a href="https://tribuemprendedores.com/web/" target="_blank" data-term="banner_url">tribuemprendedores.com</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo-row">
+        <svg xmlns="http://www.w3.org/2000/svg" width="641" height="118" fill="none" viewBox="0 0 641 118">
+          <path fill="#ffffff" d="M117.19 39.06c0 21.57-17.49 39.06-39.06 39.06S39.07 60.63 39.07 39.06 56.56 0 78.13 0s39.06 17.49 39.06 39.06M78.13 78.12c-21.58 0-39.06 17.49-39.06 39.06h78.12c0-21.57-17.49-39.06-39.06-39.06M39.07 0C17.49 0 0 17.49 0 39.06s17.49 39.06 39.07 39.06z"/>
+          <path fill="#ffffff" d="M39.07 78.12C17.49 78.12 0 95.61 0 117.18h39.07zM117.19 0c21.57 0 39.06 17.49 39.06 39.06s-17.49 39.06-39.06 39.06zM117.19 78.12c21.57 0 39.06 17.49 39.06 39.06h-39.06zM185.64 35.08V14.41h83.68v20.67h-29.11v79.88H214.9V35.08zM279.86 14.4h47.39c22.36 0 35.86 10.27 35.86 29.25 0 13.36-7.88 21.8-20.39 24.61v.28c25.17 4.36 16.03 43.32 21.8 45v1.41h-26.3c-4.92-4.22 4.22-35.02-17.3-35.02h-15.75v35.02h-25.31zm25.31 44.87h17.15c10.13 0 15.47-3.66 15.47-12.1s-5.34-12.09-15.47-12.09h-17.15zM403.12 14.4v100.55h-25.31V14.4zM483.42 61.1v.28c10.55 1.83 19.55 8.86 19.55 23.91 0 21.38-13.64 29.67-34.46 29.67H418.3V14.41h48.8c20.96 0 31.92 8.16 31.92 25.32 0 12.38-7.31 18.56-15.61 21.38zm-22.36-6.05c7.03 0 12.66-1.69 12.66-9.98s-5.62-9.99-12.66-9.99h-17.44v19.97zm-17.44 39.24h18.14c10.55 0 15.89-2.53 15.89-11.95s-5.34-11.82-15.89-11.82h-18.14zM555.43 117.2c-30.38 0-42.05-13.5-42.05-38.53V14.4h25.31v64.27c0 13.08 5.62 17.86 16.74 17.86s16.74-4.78 16.74-17.86V14.4h25.31v64.27c0 25.04-11.67 38.53-42.05 38.53M616.08 17.37h-4.19V14.4h11.99v2.97h-4.17v11.44h-3.63zM629.66 14.4l2.96 9.19h.04l2.96-9.19h4.44v14.41h-3.43v-8.97h-.04l-2.68 8.97h-2.54l-2.68-8.97h-.04v8.97h-3.43V14.4z"/>
+        </svg>
+      </div>
+      <p class="footer-tagline">Consultoría estratégica de automatizaciones con inteligencia artificial.</p>
+      <p class="footer-sub">Tu socio estratégico de crecimiento</p>
+    </div>
+    <div>
+      <div class="footer-nav-title">Tribu</div>
+      <ul class="footer-nav">
+        <li><a href="https://tribuemprendedores.com/web/" target="_blank" data-term="footer_sitio">Sitio Web</a></li>
+        <li><a href="https://tribuemprendedores.com/web/metodologia-de-implementacion-tribu.html" target="_blank" data-term="footer_metodologia">Metodología</a></li>
+        <li><a href="https://tribuemprendedores.com/web/tribu-servicio-al-cliente-ai.html" target="_blank" data-term="footer_casos">Casos de Éxito</a></li>
+        <li><a href="https://tribuemprendedores.com/web/" target="_blank" data-term="footer_contacto">Contacto</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Tribu Emprendedores® | tribuemprendedores.com</span>
+    <span class="footer-loc">Tijuana, B.C., México · San Diego, CA, USA</span>
+  </div>
+</footer>
+
+<script>
+/* ── HAMBURGUESA ── */
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        hamburger.classList.remove('open');
+        mobileMenu.classList.remove('open');
+    });
+});
+
+/* ── UTMs GLOBALES ──
+   Edita solo este objeto y se actualiza en todos los links.
+   El utm_term de cada botón se define con data-term="" en el HTML. */
+const UTM = {
+    source:   'linkedin',
+    medium:   'paid',
+    campaign: 'diagnostico_landing',
+    content:  'landing_operacional'
+};
+function applyUTMs(url, term) {
+    try {
+        const u = new URL(url);
+        u.searchParams.set('utm_source',   UTM.source);
+        u.searchParams.set('utm_medium',   UTM.medium);
+        u.searchParams.set('utm_campaign', UTM.campaign);
+        u.searchParams.set('utm_content',  UTM.content);
+        if (term) u.searchParams.set('utm_term', term);
+        return u.toString();
+    } catch(e) { return url; }
+}
+document.querySelectorAll('a[data-term]').forEach(link => {
+    link.href = applyUTMs(link.href, link.dataset.term);
+});
+</script>
+</body>
+</html>
